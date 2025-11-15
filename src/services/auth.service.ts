@@ -25,7 +25,7 @@ export class AuthService {
       email: email.toLowerCase().trim(),
     });
 
-    if (user && (await user.comperePassword(pass))) {
+    if (user && (await user.comparePassword(pass))) {
       return user;
     }
     return null;

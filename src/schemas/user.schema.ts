@@ -86,6 +86,8 @@ export class User {
 
   @Prop({ type: BusinessInfoSchema, default: () => ({}) })
   businessInfo: BusinessInfo;
+
+  comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -103,7 +105,6 @@ UserSchema.pre('save', async function (next) {
 
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string,
-  password: string,
 ): Promise<boolean> {
-  return bcrypt.compare(candidatePassword, password);
+  return bcrypt.compare(candidatePassword, this.password);
 };
