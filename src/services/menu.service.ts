@@ -32,14 +32,21 @@ export class MenuService {
       query.category = category;
     }
 
-    if (search) {
-      query.$text = { $search: search };
+    if (search && search.trim()) {
+      // Use regex for case-insensitive search instead of $text which requires text index
+      query.$or = [
+        { name: { $regex: search.trim(), $options: 'i' } },
+        { description: { $regex: search.trim(), $options: 'i' } },
+      ];
     }
 
     return this.menuModel.find(query).sort({ createdAt: -1 }).lean();
   }
 
   async findOne(id: string, userId: string): Promise<Menu | null> {
+    if (!Types.ObjectId.isValid(id)) {
+      return null;
+    }
     return this.menuModel
       .findOne({
         _id: new Types.ObjectId(id),
@@ -53,19 +60,25 @@ export class MenuService {
     updateMenuDto: UpdateMenuDto,
     userId: string,
   ): Promise<Menu | null> {
+    if (!Types.ObjectId.isValid(id)) {
+      return null;
+    }
     return this.menuModel
       .findOneAndUpdate(
-        { _id: id, userId: new Types.ObjectId(userId) },
-        { ...updateMenuDto, updateAt: new Date() },
+        { _id: new Types.ObjectId(id), userId: new Types.ObjectId(userId) },
+        updateMenuDto,
         { new: true },
       )
       .lean();
   }
 
   async remove(id: string, userId: string): Promise<Menu | null> {
+    if (!Types.ObjectId.isValid(id)) {
+      return null;
+    }
     return this.menuModel
       .findOneAndDelete({
-        _id: id,
+        _id: new Types.ObjectId(id),
         userId: new Types.ObjectId(userId),
       })
       .lean();

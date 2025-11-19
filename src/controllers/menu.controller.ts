@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  InternalServerErrorException,
   NotFoundException,
   Param,
   Post,
@@ -29,12 +28,7 @@ export class MenuController {
     @Req() req: RequestWithUser,
   ) {
     const userId = req.user.userId;
-    try {
-      return await this.menuService.create(createMenuDto, userId);
-    } catch (error) {
-      console.error(error);
-      throw new InternalServerErrorException('Failed to create menu');
-    }
+    return await this.menuService.create(createMenuDto, userId);
   }
 
   @Get(':id')

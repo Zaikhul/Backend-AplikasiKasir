@@ -6,7 +6,7 @@ import {
   Min,
 } from 'class-validator';
 
-class ImageDto {
+export class ImageDto {
   @IsString()
   url: string;
 

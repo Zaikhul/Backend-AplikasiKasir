@@ -22,14 +22,14 @@ import { JwtStrategy } from './auth.jwt';
         if (!secret) {
           throw new Error('JWT_SECRET environment variable is not set!');
         }
-        const expiresIn = configService.get<string>('JWT_EXPIRES_IN') || '3600';
+        const expiresIn = configService.get<string>('JWT_EXPIRES_IN') || '1h';
 
         return {
           secret: secret,
           signOptions: {
-            expiresIn: +expiresIn,
+            expiresIn: expiresIn,
           },
-        };
+        } as any;
       },
       inject: [ConfigService],
     }),
