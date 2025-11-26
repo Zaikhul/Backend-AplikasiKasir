@@ -42,7 +42,7 @@ export class UploadController {
         },
       }),
       limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB
+        fileSize: 10 * 1024 * 1024, // 10MB
       },
       fileFilter: (req, file, cb) => {
         const allowedMimes = [
@@ -50,6 +50,8 @@ export class UploadController {
           'image/png',
           'image/jpg',
           'image/webp',
+          'image/heic',
+          'image/heif',
         ];
         if (allowedMimes.includes(file.mimetype)) {
           cb(null, true);
