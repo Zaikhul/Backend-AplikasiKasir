@@ -28,7 +28,7 @@ export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async validateUser(
     email: string,
@@ -51,8 +51,13 @@ export class AuthService {
       role: user.role,
       name: user.name,
     };
+
+    // Return user profile along with token for immediate caching
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
     return {
       access_token: this.jwtService.sign(payload),
+      user: userWithoutPassword,
     };
   }
 
