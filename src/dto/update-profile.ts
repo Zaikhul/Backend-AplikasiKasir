@@ -1,9 +1,4 @@
-import {
-  IsOptional,
-  IsString,
-  MaxLength,
-  Matches,
-} from 'class-validator';
+import { IsOptional, IsString, MaxLength, Matches } from 'class-validator';
 
 const phoneRegex = /^[0-9+\-\s()]*$/;
 
@@ -36,4 +31,3 @@ export class UpdateProfileDto {
   @MaxLength(50)
   taxId?: string;
 }
-
